@@ -302,18 +302,22 @@ static Error zig_libc_cc_print_file_name(const char *o_file, Buf *out, bool want
         buf_init_from_buf(out, out_stdout);
     }
     return ErrorNone;
-}
-static Error zig_libc_find_native_crt_dir_posix(ZigLibCInstallation *self, bool verbose) {
-    return zig_libc_cc_print_file_name("crt1.o", &self->crt_dir, true, verbose);
-}
-static Error zig_libc_find_native_lib_dir_posix(ZigLibCInstallation *self, bool verbose) {
-    return zig_libc_cc_print_file_name("libgcc_s.so", &self->lib_dir, true, verbose);
-}
 
-static Error zig_libc_find_native_static_lib_dir_posix(ZigLibCInstallation *self, bool verbose) {
-    return zig_libc_cc_print_file_name("crtbegin.o", &self->static_lib_dir, true, verbose);
 }
 #endif
+
+#if !defined(ZIG_OS_FREEBSD) || !defined(ZIG_OS_NETBSD) || !defined(ZIG_OS_OPENBSD)
+    static Error zig_libc_find_native_crt_dir_posix(ZigLibCInstallation *self, bool verbose) {
+        return zig_libc_cc_print_file_name("crt1.o", &self->crt_dir, true, verbose);
+    }
+    static Error zig_libc_find_native_lib_dir_posix(ZigLibCInstallation *self, bool verbose) {
+        return zig_libc_cc_print_file_name("libgcc_s.so", &self->lib_dir, true, verbose);
+    }
+    static Error zig_libc_find_native_static_lib_dir_posix(ZigLibCInstallation *self, bool verbose) {
+        return zig_libc_cc_print_file_name("crtbegin.o", &self->static_lib_dir, true, verbose);
+    }
+#endif
+
 
 static Error zig_libc_find_native_dynamic_linker_posix(ZigLibCInstallation *self, bool verbose) {
 #if defined(ZIG_OS_LINUX)
