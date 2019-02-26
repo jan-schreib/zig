@@ -417,7 +417,8 @@ Error zig_libc_find_native(ZigLibCInstallation *self, bool verbose) {
     buf_init_from_str(&self->crt_dir, "/usr/lib");
     buf_init_from_str(&self->lib_dir, "/usr/lib");
     buf_init_from_str(&self->static_lib_dir, "/usr/lib");
-#elif !defined(ZIG_OS_DARWIN)
+#endif
+#if !defined(ZIG_OS_DARWIN)
     if ((err = zig_libc_find_native_crt_dir_posix(self, verbose)))
         return err;
     if ((err = zig_libc_find_native_lib_dir_posix(self, verbose)))
